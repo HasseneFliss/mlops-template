@@ -5,6 +5,11 @@ from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
 def evaluate_model(test_path, model_path, scaler_path, metrics_path="metrics/metrics.txt"):
     # Load the test dataset
     test_data = pd.read_csv(test_path)
+    
+    # Check if the 'price' column exists and drop it from X_test
+    if 'price' not in test_data.columns:
+        raise KeyError("'price' column not found in the dataset")
+    
     X_test = test_data.drop(columns=['price'])
     y_test = test_data['price']
 
