@@ -13,8 +13,9 @@ def train_large_model(train_path, model_path):
     # Incrementally train the model on each chunk
     for chunk in data.to_delayed():
         df = chunk.compute()  # Compute the chunk into an in-memory DataFrame
-        X = df.drop(columns=['Price'])  # Feature columns
-        y = df['Price']  # Target column
+        X = df.drop(columns=['price'])  # Feature columns
+
+        y = df['price']  # Target column
         model.partial_fit(X, y)  # Incrementally update the model with the chunk
     
     # Save the trained model
