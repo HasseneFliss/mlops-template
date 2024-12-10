@@ -1,23 +1,27 @@
-import os
-import pandas as pd
+import dask.dataframe as dd
 import joblib
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import SGDRegressor
 
-def train_model(train_path, model_path):
-    # Ensure the directory exists
-    os.makedirs(os.path.dirname(model_path), exist_ok=True)
+def train_large_model(train_path, model_path):
+    # Load training data in chunks
+    chunksize = 100000  # Process 100,000 rows at a time
+    data = dd.read_csv(train_path, blocksize=chunksize)  # Blocksize controls chunk size
     
-    # Load training data
-    data = pd.read_csv(train_path)
-    X = data.drop(columns=['Price'])
-    y = data['Price']
+    # Initialize the model
+    model = SGDRegressor()
     
-    # Train the model
-    model = LinearRegression()
-    model.fit(X, y)
+    # Incrementally train the model on each chunk
+    for chunk in data.to_delayed():
+        df = chunk.compute()  # Compute the chunk into an in-memory DataFrame
+        X = df.drop(columns=['price'])  # Feature columns
+        y = df['price']  # Target column
+        model.partial_fit(X, y)  # Incrementally update the model with the chunk
     
-    # Save the model
-    joblib.dump(model, model_path)
+    # Save the trained model
+    joblib.dump(model, model_path)  # Save model for deployment
 
 if __name__ == "__main__":
-    train_model("data/train.csv", "model/trained_model.pkl")
+    train_large_model(
+        train_path="data/train.csv",
+        model_path="model/trained_model.pkl"
+    )

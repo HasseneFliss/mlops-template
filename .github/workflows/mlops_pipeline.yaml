@@ -22,11 +22,18 @@ jobs:
       run: |
         pip install -r requirements.txt
 
-    - name: Run Preprocessing
+    - name: Validate Dataset Format
+      run: |
+          if ! ls data/*.csv; then
+            echo "Error: No CSV files found in the 'data/' directory!"
+            exit 1
+          fi
+
+    - name: Preprocess Dataset
       run: |
         python src/preprocess.py
-
-    - name: Train Model
+    
+    - name: Train Model Incrementally
       run: |
         python src/train.py
 
