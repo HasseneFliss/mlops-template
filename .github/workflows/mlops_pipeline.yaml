@@ -43,7 +43,7 @@ jobs:
 
     - name: Set up Docker Build
       run: | 
-          docker build . -f ./Dockerfile -t developementregistry.azurecr.io/ml-model:latest
+          docker build . -f ./Dockerfile -t developementRegistry.azurecr.io/ml-model:latest
                 
     - name: Push Docker image-dev
       run: |
