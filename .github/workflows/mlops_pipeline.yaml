@@ -61,7 +61,7 @@ jobs:
     - name: Download Model Artifacts
       uses: actions/download-artifact@v3
       with:
-        name: model-artifacts
+        name: trained-model
         path: model/
 
     - name: Set up Python
