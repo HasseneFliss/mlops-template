@@ -1,0 +1,48 @@
+name: MLOps Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Run Preprocessing
+      run: |
+        python src/preprocess.py
+
+    - name: Train Model
+      run: |
+        python src/train.py
+
+    - name: Build Docker Image
+      run: |
+        docker build -t mlops-template/ml-model:latest .
+
+    - name: Log in to Azure Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: "developementRegistry"
+        username: "developementRegistry"
+        password: "sE9bTqDyjWHmOrKaz0CWsguprKdS2LulZBZSabKUIQ+ACRCp7q8v"
+
+    - name: Pushing Docker Image
+      id: docker_push
+      run: |
+          docker build . -f ./Dockerfile -t latest $(for i in `cat .env`; do out+="--build-arg $i " ; done; echo $out;out="")
+          docker push latest
