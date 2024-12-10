@@ -53,7 +53,7 @@ jobs:
     needs: build
     environment: evaluation
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/testing'  # Only run on the 'testing' branch
+    if: github.ref == 'refs/heads/test'  # Only run on the 'test' branch
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
