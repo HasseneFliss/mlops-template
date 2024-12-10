@@ -44,5 +44,4 @@ jobs:
     - name: Pushing Docker Image
       id: docker_push
       run: |
-          docker build . -f ./Dockerfile -t devavaxiaregistry.azurecr.io/mlops-template/ml-model:latest
-          docker push devavaxiaregistry.azurecr.io/mlops-template
+        docker push devavaxiaregistry.azurecr.io/mlops-template/ml-model:latest
