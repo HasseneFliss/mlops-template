@@ -1,8 +1,12 @@
 import joblib
 import pandas as pd
 from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import os
 
 def evaluate_model(test_path, model_path, scaler_path, metrics_path="metrics/metrics.txt"):
+    # Ensure the metrics directory exists
+    os.makedirs(os.path.dirname(metrics_path), exist_ok=True)
+
     # Load the test dataset
     test_data = pd.read_csv(test_path)
     
