@@ -48,10 +48,45 @@ jobs:
         name: trained-model
         path: model/
 
+  evaluate:
+    needs: build
+    environment: evaluation
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/testing'  # Only run on the 'testing' branch
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Download Model Artifacts
+      uses: actions/download-artifact@v3
+      with:
+        name: model-artifacts
+        path: model/
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+
+    - name: Install Dependencies
+      run: |
+        pip install -r requirements.txt
+
+    - name: Evaluate Model
+      run: |
+        python src/evaluate.py
+
+    - name: Upload Evaluation Metrics
+      uses: actions/upload-artifact@v3
+      with:
+        name: evaluation-metrics
+        path: metrics/
 
   deploy:
     needs: build
+    environment: deployment
     runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'  # Only run on the 'main' branch
 
     steps:
     - name: Checkout Code
