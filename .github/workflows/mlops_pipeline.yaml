@@ -18,6 +18,11 @@ jobs:
       with:
         python-version: '3.9'
 
+    - name: Unzip Dataset
+      run: |
+          mkdir -p data  # Ensure the 'data' directory exists
+          unzip data/housing.zip -d data
+
     - name: Install Dependencies
       run: |
         pip install -r requirements.txt
