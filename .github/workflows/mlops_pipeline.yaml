@@ -47,4 +47,4 @@ jobs:
                 
     - name: Push Docker image-dev
       run: |
-          docker push developementregistry.azurecr.io/ml-model:latest
+          docker push developementRegistry.azurecr.io/ml-model:latest
