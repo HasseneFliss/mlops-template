@@ -69,3 +69,5 @@ jobs:
     - name: Push Docker image-dev
       run: |
           docker push developementRegistry.azurecr.io/ml-model:latest
+
+#### to add kustomize stage.
