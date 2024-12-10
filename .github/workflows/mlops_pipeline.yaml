@@ -39,6 +39,6 @@ jobs:
 
     - name: Build Docker Image
       run: |
-        docker build -t mlops-template/ml-model:latest .
-        docker push mlops-template/ml-model:latest
+        docker build -t devavaxiaregistry.azurecr.io/mlops-template/ml-model:latest .
+        docker push devavaxiaregistry.azurecr.io/mlops-template/ml-model:latest
 
