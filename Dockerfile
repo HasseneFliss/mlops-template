@@ -10,7 +10,10 @@ RUN pip install -r requirements.txt
 COPY src/ ./src/
 
 # Copy the trained model artifact from the downloaded location
+# Copy the trained model and scaler to the container
 COPY model/trained_model.pkl ./model/trained_model.pkl
+COPY model/scaler.pkl ./model/scaler.pkl
+
 
 # Expose Flask's default port
 EXPOSE 5000
